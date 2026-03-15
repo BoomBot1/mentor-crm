@@ -2,7 +2,20 @@
 
 namespace App\Http\Controllers;
 
-abstract class Controller
+use Illuminate\Contracts\Support\Responsable;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Controller as BaseController;
+
+abstract class Controller extends BaseController
 {
-    //
+    function successResponse(
+        ?string $message,
+        Responsable|array|null $data = [],
+    ): JsonResponse {
+        return response()->json([
+            /** @example Успех */
+            'message' => is_null($message) ? "Успех" : $message,
+            'data' => $data,
+        ]);
+    }
 }
