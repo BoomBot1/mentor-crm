@@ -9,7 +9,7 @@ use Illuminate\Routing\Controller as BaseController;
 abstract class Controller extends BaseController
 {
     function successResponse(
-        ?string $message,
+        ?string $message = null,
         Responsable|array|null $data = [],
     ): JsonResponse {
         return response()->json([

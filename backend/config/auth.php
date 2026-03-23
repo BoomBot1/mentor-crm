@@ -114,4 +114,8 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    'code' => [
+        'resending_delay' => env('CODE_RESENDING_DELAY', 60),
+    ]
+
 ];

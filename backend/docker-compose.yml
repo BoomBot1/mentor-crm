@@ -1,0 +1,74 @@
+services:
+  #NGINX
+  mentor-crm-backend-nginx:
+    image: nginx:alpine
+    container_name: mentor-crm-backend-nginx
+    restart: always
+    ports:
+      - '${DEPLOYMENT_PROXY_PORT:-8000}:80'
+    volumes:
+      - './:/var/www'
+      - './deploy/nginx/dev:/etc/nginx/conf.d/'
+      - '${APP_STORAGE_PATH}:/mnt/storage'
+    networks:
+      - mentor-crm-backend
+    depends_on:
+      - mentor-crm-backend-fpm
+
+  #FPM
+  mentor-crm-backend-fpm:
+    build:
+      args:
+        app_mode: development
+        xdebug_enabled: ${XDEBUG_ENABLED:-false}
+      context: ./
+      dockerfile: deploy/fpm/Dockerfile
+    image: mentor-crm-backend
+    container_name: mentor-crm-backend-fpm
+    working_dir: /var/www/
+    volumes:
+      - './:/var/www'
+      - '${APP_STORAGE_PATH}:/mnt/storage'
+    ports:
+      - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
+    networks:
+      - mentor-crm-backend
+    environment:
+      PHP_IDE_CONFIG: serverName=mentor-crm-backend-fpm--local
+
+  #PGSQL
+  mentor-crm-backend-pgsql:
+    image: postgres:17
+    container_name: mentor-crm-backend-pgsql
+    volumes:
+      - "mentor-crm-backend-pgsql:/var/lib/postgresql/data"
+      - './deploy/pgsql/create-testing-database.sql:/docker-entrypoint-initdb.d/10-create-testing-database.sql'
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_DATABASE}
+    ports:
+      - '${FORWARD_PGSQL_PORT:-5432}:5432'
+    networks:
+      - mentor-crm-backend
+
+  #REDIS
+  mentor-crm-backend-redis:
+    image: 'redis:alpine'
+    container_name: mentor-crm-backend-redis
+    volumes:
+      - 'mentor-crm-backend-redis:/data'
+    ports:
+      - '${FORWARD_REDIS_PORT:-6379}:6379'
+    networks:
+      - mentor-crm-backend
+
+networks:
+  mentor-crm-backend:
+    name: mentor-crm-backend
+    driver: bridge
+volumes:
+  mentor-crm-backend-pgsql:
+    driver: local
+  mentor-crm-backend-redis:
+    driver: local
