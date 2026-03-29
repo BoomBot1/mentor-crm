@@ -13,16 +13,26 @@ use Laravel\Sanctum\PersonalAccessToken;
 
 /**
  * @property-read int $id
- *
  * @property string $token
  * @property int|null $access_token_id
  * @property Carbon|null $expires_at
- *
  * @property-read HasApiTokens|null $tokenable
  * @property-read PersonalAccessToken|null $accessToken
- *
  * @method static Builder<static>|PersonalRefreshToken query()
- *
+ * @property string $tokenable_type
+ * @property string $tokenable_id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder<static>|PersonalRefreshToken newModelQuery()
+ * @method static Builder<static>|PersonalRefreshToken newQuery()
+ * @method static Builder<static>|PersonalRefreshToken whereAccessTokenId($value)
+ * @method static Builder<static>|PersonalRefreshToken whereCreatedAt($value)
+ * @method static Builder<static>|PersonalRefreshToken whereExpiresAt($value)
+ * @method static Builder<static>|PersonalRefreshToken whereId($value)
+ * @method static Builder<static>|PersonalRefreshToken whereToken($value)
+ * @method static Builder<static>|PersonalRefreshToken whereTokenableId($value)
+ * @method static Builder<static>|PersonalRefreshToken whereTokenableType($value)
+ * @method static Builder<static>|PersonalRefreshToken whereUpdatedAt($value)
  * @mixin Eloquent
  */
 final class PersonalRefreshToken extends Model

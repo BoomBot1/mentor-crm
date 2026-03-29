@@ -2,11 +2,26 @@
 
 namespace App\Models;
 
+use Database\Factories\GroupFactory;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Collection;
 
+/**
+ * @property-read string $id
+ *
+ * @property string $name
+ *
+ * @property-read Collection<int, Trainee> $trainees
+ * @property-read Collection<int, User> $users
+ *
+ * @method static GroupFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Group query()
+ * @mixin Eloquent
+ */
 final class Group extends Model
 {
     use HasFactory;

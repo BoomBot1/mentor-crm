@@ -26,24 +26,26 @@ final readonly class UserRepository
 
     public function getMentorInfo(User $user): MentorInfoDTO
     {
+        $group = $user->group;
         $buddings = $user
             ->getBuddingsToday()
             ->load('trainee');
         $trainees = $buddings
             ->pluck('trainee')
             ->unique();
-        dd($buddings, $trainees);
+
         return new MentorInfoDTO(
             user: $user,
             buddings: $buddings,
-            trainees: $trainees
+            trainees: $trainees,
+            group: $group,
         );
     }
 
     public function getBackofficeInfo(User $user): BackofficeInfoDTO
     {
-        $mentors = $user
-            ->group
+        $group = $user->group;
+        $mentors = $group
             ->users
             ->where('role', RoleType::Mentor->value)
             ->collect();
@@ -51,19 +53,21 @@ final readonly class UserRepository
         return new BackofficeInfoDTO(
             user: $user,
             mentors: $mentors,
+            group: $group,
         );
     }
 
     public function getTrainerInfo(User $user): TrainerInfoDTO
     {
-        $trainees = $user
-            ->group
+        $group = $user->group;
+        $trainees = $group
             ->trainees
             ->collect();
 
         return new TrainerInfoDTO(
             user: $user,
             trainees: $trainees,
+            group: $group,
         );
     }
 }
