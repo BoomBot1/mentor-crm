@@ -9,8 +9,6 @@ final class UserObserver
 {
     public function creating(User $user): void
     {
-        $uuid = Str::uuid();
-
-        $user->id = $uuid;
+        $user->id = Str::uuid()->toString();
     }
 }

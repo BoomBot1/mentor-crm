@@ -9,15 +9,17 @@ return new class extends Migration {
     {
         Schema::create('users', static function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->string('name')->nullable();
             $table->string('email')->unique();
-            $table->json('contact')->nullable();
-            $table->string('job_title')->nullable();
+            $table->json('contact')->nullable()->default(null);
+            $table->string('role')->nullable();
             $table->boolean('remote')->default(true);
             $table->boolean('is_active')->default(true);
             $table->uuid('group_id')->nullable();
-            $table->datetime('vacation_until')->nullable();
-            $table->datetime('last_login_at')->nullable();
-            $table->datetime('last_action_at')->nullable();
+            $table->datetime('vacation_until')->nullable()->default(null);
+            $table->datetime('last_login_at')->nullable()->default(null);
+            $table->datetime('last_action_at')->nullable()->default(null);
+            $table->datetime('email_verified_at')->nullable()->default(null);
             $table->timestamps();
 
             $table->foreign('group_id')

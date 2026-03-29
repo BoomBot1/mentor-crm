@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 final class Report extends Model
 {
-
+    public $incrementing = false;
+    protected $keyType = 'string';
     protected $table = 'reports';
     protected $guarded = ['id'];
 
